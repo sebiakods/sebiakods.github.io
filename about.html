@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>About — Sebia Kods</title>
+<meta name="description" content="About Sebia Kods — AI Engineer, ML Architect and Data Scientist."/>
+<link rel="stylesheet" href="style.css"/>
+<style>
+  /* ── ABOUT GRID ── */
+  .about-grid {
+    display:grid; grid-template-columns:340px 1fr;
+    gap:5rem; align-items:start; margin-top:3rem;
+  }
+  .portrait-frame {
+    aspect-ratio:3/4; border-radius:var(--radius-lg);
+    background:linear-gradient(135deg,var(--navy-3),var(--navy-2));
+    border:1px solid rgba(124,58,237,.28);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden; width:100%;
+  }
+  .portrait-frame::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse at 30% 20%,rgba(124,58,237,.13),transparent 60%);
+  }
+  .portrait-glow {
+    position:absolute; width:100px; height:100px; border-radius:50%;
+    background:var(--violet); filter:blur(55px); opacity:.3; bottom:20%; left:20%;
+  }
+  .portrait-initials {
+    font-family:var(--font-display); font-size:5rem; font-weight:700;
+    background:linear-gradient(135deg,var(--violet-light),var(--mint));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    background-clip:text; position:relative; z-index:1;
+  }
+  /* Replace the above with an <img> when you have a photo:
+     .portrait-frame img { width:100%; height:100%; object-fit:cover; } */
+
+  .about-side-links { display:flex; flex-direction:column; gap:.7rem; margin-top:1.5rem; }
+  .side-link {
+    display:flex; align-items:center; gap:.7rem;
+    padding:.7rem 1rem; border-radius:var(--radius-sm);
+    border:1px solid var(--white-faint); color:var(--white-dim);
+    font-family:var(--font-display); font-size:.83rem;
+    transition:all var(--transition);
+  }
+  .side-link:hover { border-color:var(--mint); color:var(--mint); background:rgba(52,211,153,.07); }
+
+  .about-text p { color:var(--white-dim); line-height:1.85; margin-bottom:1.1rem; font-size:.98rem; }
+  .about-text p strong { color:var(--lavender); font-weight:500; }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:1.3rem; margin-top:3rem;
+  }
+  .sg {
+    background:var(--navy-2); border:1px solid var(--white-faint);
+    border-radius:var(--radius-md); padding:1.5rem;
+    transition:all var(--transition); position:relative; overflow:hidden;
+  }
+  .sg::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg,var(--violet),var(--mint));
+    opacity:0; transition:opacity .3s;
+  }
+  .sg:hover::before { opacity:1; }
+  .sg:hover { border-color:rgba(124,58,237,.35); transform:translateY(-4px); box-shadow:0 10px 34px rgba(0,0,0,.32); }
+  .sg-icon { font-size:1.5rem; margin-bottom:.65rem; }
+  .sg-title {
+    font-family:var(--font-display); font-size:.78rem; font-weight:600;
+    color:var(--lavender); letter-spacing:.08em; text-transform:uppercase; margin-bottom:.85rem;
+  }
+
+  /* ── EDUCATION ── */
+  .edu-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.3rem; margin-top:3rem; }
+  .ec {
+    background:var(--navy-2); border:1px solid var(--white-faint);
+    border-radius:var(--radius-md); padding:1.8rem; transition:all var(--transition);
+  }
+  .ec:hover { border-color:rgba(196,181,253,.32); transform:translateY(-4px); box-shadow:0 10px 34px rgba(0,0,0,.32); }
+  .ec-deg { font-family:var(--font-display); font-size:1rem; font-weight:700; color:var(--white); margin-bottom:.2rem; }
+  .ec-field { font-size:.83rem; color:var(--lavender); margin-bottom:.15rem; }
+  .ec-school { font-size:.8rem; color:var(--white-dim); }
+  .ec-date { font-family:var(--font-mono); font-size:.68rem; color:var(--mint); margin:.5rem 0 .9rem; }
+  .ec-tags { display:flex; flex-wrap:wrap; gap:.38rem; margin-top:.7rem; }
+  .ctag { font-size:.65rem; font-family:var(--font-mono); padding:.18rem .55rem; border-radius:4px; background:var(--white-faint); color:var(--white-dim); }
+
+  /* ── RESEARCH ── */
+  .research-card {
+    background:var(--navy-2); border:1px solid var(--white-faint);
+    border-radius:var(--radius-lg); padding:2rem; margin-top:3rem; transition:all var(--transition);
+  }
+  .research-card:hover { border-color:rgba(124,58,237,.38); box-shadow:0 12px 40px rgba(0,0,0,.38); }
+  .rc-header { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:1rem; }
+  .rc-title { font-family:var(--font-display); font-size:1.05rem; font-weight:700; color:var(--white); }
+  .rc-org { font-size:.82rem; color:var(--lavender); margin-top:.2rem; }
+  .rc-date { font-family:var(--font-mono); font-size:.68rem; color:var(--mint); white-space:nowrap; }
+  .rc-desc { font-size:.89rem; color:var(--white-dim); line-height:1.75; margin-bottom:1rem; }
+
+  @media(max-width:900px) {
+    .about-grid { grid-template-columns:1fr; gap:2rem; }
+    .portrait-frame { max-width:260px; }
+    .edu-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor">
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">sebiakods<span>.dev</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="https://mail.google.com/mail/?view=cm&to=sebiakods@gmail.com" target="_blank" class="nav-cta">Let's Talk</a>
+  <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <p class="page-hero-lbl reveal">About Me</p>
+  <h1 class="page-hero-title reveal d1">The mind <em>behind the model</em></h1>
+  <p class="page-hero-sub reveal d2">AI Engineer, ML Architect, and Data Scientist based in Algeria — passionate about the full ML stack.</p>
+</div>
+
+<!-- ABOUT -->
+<section class="sec">
+  <div class="about-grid">
+    <div class="reveal">
+      <div class="portrait-frame">
+        <div class="portrait-glow"></div>
+        <!-- To add your photo: replace the div below with <img src="images/profile.jpg" alt="Sebia Kods"> -->
+        <div class="portrait-initials">SK</div>
+      </div>
+      <div class="about-side-links">
+        <a href="https://github.com/sebiakods" target="_blank" class="side-link">⌥ github.com/sebiakods</a>
+        <a href="https://linkedin.com/in/sebiakods" target="_blank" class="side-link">in linkedin.com/in/sebiakods</a>
+        <a href="mailto:sebiakods@gmail.com" class="side-link">✉ sebiakods@gmail.com</a>
+        <a href="tel:+213799118990" class="side-link">☎ +213 7 99 11 89 90</a>
+      </div>
+    </div>
+    <div class="about-text">
+      <p class="reveal d1">I'm <strong>Sebia Kods</strong>, an AI Engineer and ML Architect based in <strong>El Eulma, Sétif, Algeria</strong>. I work across the full ML spectrum — from NLP and computer vision to reinforcement learning and real-time AI systems.</p>
+      <p class="reveal d2">My interest in machine learning started with a simple question: how can a system learn patterns that humans can't explicitly see? That curiosity has driven everything — from building a TF-IDF retrieval engine over 2,000 arXiv papers, to training deep learning models for facial recognition, to deploying forest fire prediction APIs with interactive maps.</p>
+      <p class="reveal d3">I hold an <strong>M.Sc. in Computer Science</strong> specializing in AI, Image Processing, and Data Mining. My academic path gave me strong foundations in statistical learning, pattern recognition, and distributed systems — which I combine with hands-on engineering to build systems that hold up in production.</p>
+      <p class="reveal d4">When I'm not training models, I'm thinking about how to make them safer, more interpretable, and genuinely useful.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<div class="sec-full" style="background:var(--navy-2);">
+  <div class="sec-inner">
+    <p class="lbl reveal">Skills</p>
+    <h2 class="ttl reveal d1">My <em>toolkit</em></h2>
+    <div class="divider reveal d2"></div>
+    <div class="skills-grid">
+      <div class="sg reveal">
+        <div class="sg-icon">🧠</div>
+        <div class="sg-title">ML & Deep Learning</div>
+        <div class="pills">
+          <span class="pill hi">PyTorch</span><span class="pill hi">TensorFlow</span>
+          <span class="pill hi">Scikit-learn</span><span class="pill">Keras</span>
+          <span class="pill">HuggingFace</span><span class="pill">LangChain</span>
+          <span class="pill">Offline RL</span><span class="pill">NLP</span><span class="pill">Computer Vision</span>
+        </div>
+      </div>
+      <div class="sg reveal d1">
+        <div class="sg-icon">📊</div>
+        <div class="sg-title">Data Science</div>
+        <div class="pills">
+          <span class="pill hi">Python</span><span class="pill">Pandas</span>
+          <span class="pill">NumPy</span><span class="pill">Matplotlib</span>
+          <span class="pill">Seaborn</span><span class="pill">Jupyter</span>
+          <span class="pill">Data Mining</span><span class="pill">Big Data</span>
+        </div>
+      </div>
+      <div class="sg reveal d2">
+        <div class="sg-icon">⚡</div>
+        <div class="sg-title">Programming</div>
+        <div class="pills">
+          <span class="pill hi">Python</span><span class="pill hi">TypeScript</span>
+          <span class="pill">JavaScript</span><span class="pill">Java</span>
+          <span class="pill">Kotlin</span><span class="pill">SQL</span><span class="pill">C++</span>
+        </div>
+      </div>
+      <div class="sg reveal d3">
+        <div class="sg-icon">🚀</div>
+        <div class="sg-title">Deployment & APIs</div>
+        <div class="pills">
+          <span class="pill hi">FastAPI</span><span class="pill">Docker</span>
+          <span class="pill">REST API</span><span class="pill">Flask</span>
+          <span class="pill">Git / GitHub</span><span class="pill">Linux</span>
+        </div>
+      </div>
+      <div class="sg reveal">
+        <div class="sg-icon">🗄️</div>
+        <div class="sg-title">Databases & Vision</div>
+        <div class="pills">
+          <span class="pill">MySQL</span><span class="pill">PostgreSQL</span>
+          <span class="pill">MongoDB</span><span class="pill hi">OpenCV</span><span class="pill">PySide6</span>
+        </div>
+      </div>
+      <div class="sg reveal d1">
+        <div class="sg-icon">🌍</div>
+        <div class="sg-title">Languages</div>
+        <div class="pills">
+          <span class="pill hi">Arabic · Native</span>
+          <span class="pill hi">English · B2</span>
+          <span class="pill">French · Intermediate</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESEARCH -->
+<section class="sec">
+  <p class="lbl reveal">Research</p>
+  <h2 class="ttl reveal d1">Where I push <em>further</em></h2>
+  <div class="divider reveal d2"></div>
+  <div class="research-card reveal">
+    <div class="rc-header">
+      <div>
+        <div class="rc-title">Drug Dosing Optimization in ICU — Offline Reinforcement Learning</div>
+        <div class="rc-org">Ferhat Abbas University Sétif 1 · Computer Science Lab · Master's Thesis</div>
+      </div>
+      <div class="rc-date">Jan – Jun 2026</div>
+    </div>
+    <p class="rc-desc">Designed and trained an offline RL system (BCQ & CQL) on 146K clinical transitions from MIMIC-III to personalize insulin dosing. Built a custom MDP with multi-component rewards, clinical feature engineering from raw EHR data, and evaluated policies across 7 axes — OPE estimators, safety metrics, clinician agreement, and subgroup analysis.</p>
+    <div class="tag-row">
+      <span class="tag">BCQ</span><span class="tag">CQL</span><span class="tag">MIMIC-III</span>
+      <span class="tag">Offline RL</span><span class="tag">MDP</span><span class="tag">OPE</span>
+      <span class="tag">PyTorch</span><span class="tag">Clinical AI</span><span class="tag">EHR</span>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="sec" style="border-top:1px solid var(--white-faint); padding-top:5rem;">
+  <p class="lbl reveal">Education</p>
+  <h2 class="ttl reveal d1">Built on <em>strong foundations</em></h2>
+  <div class="divider reveal d2"></div>
+  <div class="edu-grid">
+    <div class="ec reveal">
+      <div class="ec-deg">Master's Degree</div>
+      <div class="ec-field">Foundations & Engineering of Information and Image (F3I)</div>
+      <div class="ec-school">Ferhat Abbas University Sétif 1</div>
+      <div class="ec-date">2024 – 2026</div>
+      <div class="ec-tags">
+        <span class="ctag">Statistical Learning</span><span class="ctag">Pattern Recognition</span>
+        <span class="ctag">Data Mining</span><span class="ctag">Image Processing</span>
+        <span class="ctag">Big Data</span><span class="ctag">Distributed Systems</span>
+        <span class="ctag">Multi-Agent Systems</span><span class="ctag">Information Retrieval</span>
+      </div>
+    </div>
+    <div class="ec reveal d1">
+      <div class="ec-deg">Licence (B.Sc.)</div>
+      <div class="ec-field">Computer Systems (Systèmes Informatiques)</div>
+      <div class="ec-school">Ferhat Abbas University Sétif 1</div>
+      <div class="ec-date">2021 – 2024</div>
+      <div class="ec-tags">
+        <span class="ctag">Algorithms & DS</span><span class="ctag">Operating Systems</span>
+        <span class="ctag">Databases</span><span class="ctag">Networks</span>
+        <span class="ctag">OOP (Java)</span><span class="ctag">Web Dev</span>
+        <span class="ctag">Software Engineering</span>
+      </div>
+    </div>
+  </div>
+  <div class="reveal" style="margin-top:1.3rem;">
+    <div style="background:var(--navy-2);border:1px solid rgba(52,211,153,.2);border-radius:var(--radius-md);padding:1.3rem 1.7rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;">
+      <span style="font-size:1.5rem;">🏅</span>
+      <div>
+        <div style="font-family:var(--font-display);font-weight:700;font-size:.93rem;">English B2 · Upper-Intermediate</div>
+        <div style="font-size:.79rem;color:var(--white-dim);margin-top:.12rem;">Intensive Language Teaching Center · Ferhat Abbas University Sétif 1 · 2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><p>© 2026 <span>Sebia Kods</span> · sebiakods.dev</p></footer>
+<script src="script.js"></script>
+</body>
+</html>
