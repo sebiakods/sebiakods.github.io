@@ -17,21 +17,12 @@
 
   const lastTyped = blocks[blocks.length - 1].querySelector(".typed");
 
-  // =========================================================
-  // IMPORTANT:
-  // This script ONLY controls the terminal.
-  // It does NOT touch the hero section or .hero-title.
-  // =========================================================
-
   if (reduce || !("IntersectionObserver" in window)) {
     if (lastTyped) lastTyped.after(cursor);
     return;
   }
 
-  // Keep original height so the page does not jump
   body.style.minHeight = `${body.offsetHeight}px`;
-
-  // Store the original terminal content
   const steps = blocks.map(block => {
     const typed = block.querySelector(".typed");
 
@@ -76,9 +67,6 @@
 
   term.classList.add("is-typing", "is-armed");
 
-  // =========================================================
-  // TIMING
-  // =========================================================
 
   let skipped = false;
   const waiters = new Set();
@@ -109,18 +97,11 @@
       await sleep(rand(min, max));
     }
   }
-
-  // Clicking terminal skips animation
   term.addEventListener("click", () => {
     skipped = true;
 
     [...waiters].forEach(fn => fn());
   });
-
-  // =========================================================
-  // PLAY TERMINAL ANIMATION
-  // =========================================================
-
   async function play() {
     term.classList.remove("is-armed");
     term.classList.add("is-booting");
@@ -191,16 +172,10 @@
 
       await sleep(320);
     }
-
-    // Restore normal height
     body.style.minHeight = "";
 
     term.classList.remove("is-typing");
   }
-
-  // =========================================================
-  // START ONLY ONCE
-  // =========================================================
 
   const io = new IntersectionObserver(
     entries => {
@@ -218,4 +193,169 @@
   );
 
   io.observe(term);
+})();
+(() => {
+    const section = document.querySelector(".skills");
+    if (!section) return;
+
+    const grid = section.querySelector(".skills__grid");
+    const cards = [...section.querySelectorAll(".skill-card")];
+
+    if (!grid || !cards.length) return;
+
+    const reduce = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+
+    if (reduce || !("IntersectionObserver" in window)) {
+        cards.forEach(card => {
+            card.classList.add("is-loaded");
+        });
+
+        return;
+    }
+
+    const status = document.createElement("div");
+
+    status.className = "skills__status";
+
+    status.innerHTML = `
+        <span class="skills__prompt">$</span>
+        <span class="skills__command">skills --scan</span>
+        <span class="skills__cursor" aria-hidden="true"></span>
+    `;
+
+    grid.parentNode.insertBefore(status, grid);
+
+
+    const progress = document.createElement("div");
+
+    progress.className = "skills__progress";
+
+    progress.innerHTML = `
+        <div class="skills__progress-info">
+            <span>loading modules</span>
+            <span class="skills__percentage">0%</span>
+        </div>
+
+        <div class="skills__progress-track">
+            <span class="skills__progress-fill"></span>
+        </div>
+    `;
+
+    status.appendChild(progress);
+
+    const fill = progress.querySelector(
+        ".skills__progress-fill"
+    );
+
+    const percentage = progress.querySelector(
+        ".skills__percentage"
+    );
+
+    cards.forEach(card => {
+        card.classList.add("is-armed");
+    });
+
+
+    const sleep = ms =>
+        new Promise(resolve => setTimeout(resolve, ms));
+
+    const random = (min, max) =>
+        min + Math.random() * (max - min);
+
+    let played = false;
+
+    async function play() {
+
+        if (played) return;
+
+        played = true;
+
+        section.classList.add("is-scanning");
+
+        await sleep(500);
+
+        /* Type command */
+
+        const command =
+            status.querySelector(".skills__command");
+
+        const originalCommand = command.textContent;
+
+        command.textContent = "";
+
+        for (const char of originalCommand) {
+            command.textContent += char;
+
+            await sleep(
+                random(35, 70)
+            );
+        }
+
+        await sleep(350);
+
+        for (let i = 0; i < cards.length; i++) {
+
+            const card = cards[i];
+
+            card.classList.remove("is-armed");
+            card.classList.add("is-loading");
+
+            const percent = Math.round(
+                ((i + 1) / cards.length) * 100
+            );
+
+            fill.style.width = `${percent}%`;
+            percentage.textContent = `${percent}%`;
+
+            await sleep(180);
+
+            card.classList.remove("is-loading");
+            card.classList.add("is-loaded");
+
+            await sleep(140);
+        }
+
+        await sleep(300);
+
+        status.classList.add("is-complete");
+
+        const cursor =
+            status.querySelector(".skills__cursor");
+
+        if (cursor) {
+            cursor.remove();
+        }
+
+        const commandLine =
+            status.querySelector(".skills__command");
+
+        commandLine.textContent =
+            "skills --scan complete";
+
+        await sleep(500);
+
+        section.classList.remove("is-scanning");
+    }
+    const observer =
+        new IntersectionObserver(
+            entries => {
+
+                const entry = entries[0];
+
+                if (!entry.isIntersecting) return;
+
+                observer.disconnect();
+
+                play();
+            },
+            {
+                threshold: 0.2
+            }
+        );
+
+    observer.observe(section);
+
 })();

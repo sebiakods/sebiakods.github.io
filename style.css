@@ -742,3 +742,572 @@ body {
         animation: none;
     }
 }
+/* =========================================================
+   TECHNICAL SKILLS
+   Terminal-window cards. Same class names as before, so the
+   existing markup keeps working.
+
+   Expects these to be defined elsewhere (as before):
+   --bg --text --font --screen --line --bar --blue --green
+   --bright --dim, plus @keyframes blink and power-on.
+
+   Idea: every card is a terminal window. Idle windows are
+   dimmed; the hovered / focused one becomes the "active"
+   window (bright title bar, live cursor, full-strength text).
+   ========================================================= */
+
+.skills {
+    padding: clamp(5rem, 9vw, 7rem) 1.25rem;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+}
+
+.skills__inner {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   SECTION LABEL + HEADING
+   ========================================================= */
+
+.skills__label {
+    margin: 0 0 1rem;
+
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+
+    color: var(--dim);
+}
+
+.skills__heading {
+    margin: 0 0 2.75rem;
+
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    line-height: 1.2;
+
+    font-weight: 700;
+    letter-spacing: -0.02em;
+
+    color: var(--bright);
+}
+
+.skills__label::before,
+.skills__heading::before {
+    content: "$ ";
+
+    color: var(--blue);
+
+    text-shadow: 0 0 8px rgba(59, 120, 255, 0.45);
+}
+
+
+/* =========================================================
+   GRID
+   Cards now line up with the heading (the old side margins
+   pushed them out of alignment with it).
+
+   Want three columns on wide screens? Swap the template for:
+   repeat(auto-fit, minmax(min(100%, 340px), 1fr))
+   ========================================================= */
+
+.skills__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+
+/* =========================================================
+   CARD (an idle terminal window)
+   ========================================================= */
+
+.skill-card {
+    --accent: var(--blue);
+    --accent-ring: color-mix(in srgb, var(--blue) 30%, transparent);
+    --accent-glow: color-mix(in srgb, var(--blue) 45%, transparent);
+    --bar-active: color-mix(in srgb, var(--blue) 10%, var(--bar));
+
+    position: relative;
+    isolation: isolate;
+
+    display: flex;
+    flex-direction: column;
+
+    min-height: 150px;
+
+    background: var(--screen);
+    color: var(--text);
+
+    border: 1px solid var(--line);
+    border-radius: 8px;
+
+    overflow: hidden;
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 10px 24px -16px rgba(0, 0, 0, 0.7);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.25s ease,
+        transform 0.2s ease;
+}
+
+
+/* =========================================================
+   ACTIVE WINDOW (hover / keyboard focus)
+   ========================================================= */
+
+.skill-card:hover,
+.skill-card:focus-within {
+    border-color: var(--accent);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 0 0 1px var(--accent-ring),
+        0 16px 32px -16px var(--accent-glow);
+}
+
+.skill-card:focus {
+    outline: none;
+}
+
+.skill-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   TITLE BAR
+   ========================================================= */
+
+.skill-card__bar {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+
+    flex-shrink: 0;
+
+    height: 2.25rem;
+    padding-left: 0.9rem;
+
+    background: var(--bar);
+    border-bottom: 1px solid var(--line);
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.skill-card:hover .skill-card__bar,
+.skill-card:focus-within .skill-card__bar {
+    background: var(--bar-active);
+    border-bottom-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+}
+
+
+/* Window title */
+
+.skill-card__name {
+    display: flex;
+    align-items: center;
+
+    gap: 0.5rem;
+
+    min-width: 0;
+    overflow: hidden;
+
+    font-size: 0.7rem;
+    letter-spacing: 0.02em;
+
+    color: #cfcfcf;
+    white-space: nowrap;
+
+    opacity: 0.6;
+
+    transition: opacity 0.2s ease;
+}
+
+.skill-card__name::before {
+    content: ">_";
+
+    font-weight: 700;
+
+    color: var(--bright);
+
+    transition:
+        color 0.2s ease,
+        text-shadow 0.2s ease;
+}
+
+.skill-card:hover .skill-card__name,
+.skill-card:focus-within .skill-card__name {
+    opacity: 1;
+}
+
+.skill-card:hover .skill-card__name::before,
+.skill-card:focus-within .skill-card__name::before {
+    color: var(--accent);
+
+    text-shadow: 0 0 8px rgba(59, 120, 255, 0.5);
+}
+
+
+/* =========================================================
+   WINDOW CONTROLS
+   ========================================================= */
+
+.skill-card__ctrl {
+    display: flex;
+    align-self: stretch;
+    flex-shrink: 0;
+
+    opacity: 0.5;
+
+    transition: opacity 0.2s ease;
+}
+
+.skill-card:hover .skill-card__ctrl,
+.skill-card:focus-within .skill-card__ctrl {
+    opacity: 1;
+}
+
+.skill-card__ctrl i {
+    position: relative;
+
+    width: 2.6rem;
+
+    color: #bdbdbd;
+
+    transition: background-color 0.15s ease;
+}
+
+.skill-card__ctrl i::before,
+.skill-card__ctrl i::after {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    translate: -50% -50%;
+
+    background: currentColor;
+}
+
+.skill-card__ctrl i:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* Minimize */
+
+.skill-card__ctrl i:nth-child(1)::before {
+    width: 9px;
+    height: 1px;
+}
+
+.skill-card__ctrl i:nth-child(1)::after {
+    display: none;
+}
+
+
+/* Maximize */
+
+.skill-card__ctrl i:nth-child(2)::before {
+    width: 8px;
+    height: 8px;
+
+    background: none;
+
+    border: 1px solid currentColor;
+}
+
+.skill-card__ctrl i:nth-child(2)::after {
+    display: none;
+}
+
+
+/* Close */
+
+.skill-card__ctrl i:nth-child(3)::before,
+.skill-card__ctrl i:nth-child(3)::after {
+    width: 12px;
+    height: 1px;
+}
+
+.skill-card__ctrl i:nth-child(3)::before {
+    rotate: 45deg;
+}
+
+.skill-card__ctrl i:nth-child(3)::after {
+    rotate: -45deg;
+}
+
+.skill-card__ctrl i:nth-child(3):hover {
+    background: #c42b1c;
+    color: #fff;
+}
+
+
+/* =========================================================
+   CARD BODY
+   ========================================================= */
+
+.skill-card__body {
+    position: relative;
+
+    flex: 1;
+
+    padding: 1.35rem 1.5rem 1.5rem;
+
+    font-size: 0.82rem;
+    line-height: 1.6;
+}
+
+
+/* Scanlines: kept, but quieter and tucked behind the text
+   so they never reduce legibility. */
+
+.skill-card__body::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    pointer-events: none;
+
+    opacity: 0.35;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.03) 0,
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+
+/* =========================================================
+   TITLE (the command line)
+   ========================================================= */
+
+.skill-card__title {
+    margin: 0;
+
+    font-size: 1.02rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+
+    color: var(--bright);
+
+    overflow-wrap: anywhere;
+
+    transition: color 0.2s ease;
+}
+
+.skill-card:hover .skill-card__title,
+.skill-card:focus-within .skill-card__title {
+    color: #fff;
+}
+
+.skill-card__title .prompt {
+    margin-right: 0.65ch;
+
+    color: var(--green);
+
+    text-shadow: 0 0 8px rgba(22, 198, 12, 0.45);
+
+    user-select: none;
+}
+
+
+/* =========================================================
+   CURSOR
+   Idle windows show a dim, still cursor. Only the active
+   window blinks, so the grid isn't a wall of flashing
+   blocks.
+   ========================================================= */
+
+.skill-card .cursor {
+    display: inline-block;
+
+    width: 0.55em;
+    height: 1.1em;
+
+    margin-left: 3px;
+
+    vertical-align: text-bottom;
+
+    background: var(--text);
+
+    opacity: 0.35;
+
+    transition: opacity 0.2s ease;
+}
+
+.skill-card:hover .cursor,
+.skill-card:focus-within .cursor {
+    opacity: 1;
+
+    animation: blink 1.06s steps(1) infinite;
+}
+
+
+/* =========================================================
+   DESCRIPTION (command output)
+   Always visible, so cards are never empty and touch
+   screens can read them. It dims when idle and comes to
+   full strength on the active window.
+
+   Prefer the old hidden-until-hover reveal? Set the idle
+   opacity to 0 and add transform: translateY(5px).
+   ========================================================= */
+
+.skill-card__desc {
+    position: relative;
+
+    max-width: 46ch;
+
+    margin: 0.85rem 0 0;
+    padding-left: 2ch;
+
+    color: var(--text);
+
+    font-size: 0.8rem;
+    line-height: 1.65;
+
+    opacity: 0.6;
+
+    transition: opacity 0.25s ease;
+}
+
+.skill-card__desc::before {
+    content: ">";
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    color: var(--dim);
+
+    transition: color 0.2s ease;
+}
+
+.skill-card:hover .skill-card__desc,
+.skill-card:focus-within .skill-card__desc {
+    opacity: 1;
+}
+
+.skill-card:hover .skill-card__desc::before,
+.skill-card:focus-within .skill-card__desc::before {
+    color: var(--accent);
+}
+
+
+/* =========================================================
+   BOOT ANIMATION
+   ========================================================= */
+
+.skill-card.is-armed {
+    visibility: hidden;
+}
+
+.skill-card.is-booting {
+    animation:
+        power-on 0.7s cubic-bezier(0.2, 0.7, 0.2, 1)
+        both;
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+   Hover sticks after a tap, so skip the lift there.
+   ========================================================= */
+
+@media (hover: none) {
+
+    .skill-card:hover,
+    .skill-card:focus-within {
+        transform: none;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .skills {
+        padding: 4rem 1rem;
+    }
+
+    .skills__heading {
+        margin-bottom: 2rem;
+    }
+
+    .skills__grid {
+        grid-template-columns: 1fr;
+
+        gap: 1rem;
+    }
+
+    .skill-card {
+        min-height: 0;
+    }
+
+    .skill-card__body {
+        padding: 1.2rem 1.25rem 1.3rem;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .skill-card,
+    .skill-card__bar,
+    .skill-card__name,
+    .skill-card__name::before,
+    .skill-card__ctrl,
+    .skill-card__ctrl i,
+    .skill-card__title,
+    .skill-card__desc,
+    .skill-card__desc::before,
+    .skill-card .cursor {
+        transition: none;
+    }
+
+    .skill-card:hover,
+    .skill-card:focus-within {
+        transform: none;
+    }
+
+    .skill-card:hover .cursor,
+    .skill-card:focus-within .cursor,
+    .skill-card.is-booting {
+        animation: none;
+    }
+}
+
