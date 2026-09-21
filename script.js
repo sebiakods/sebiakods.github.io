@@ -359,3 +359,337 @@
     observer.observe(section);
 
 })();
+/* =========================================================
+   FEATURED PROJECTS
+   - Scroll reveal
+   - Metric counters
+   - Project image cursor
+   - Architecture animation
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    /*
+    =========================================================
+    1. SCROLL REVEAL
+    =========================================================
+    */
+
+    const projects = document.querySelectorAll(".project");
+
+    if (!projects.length) return;
+
+    const revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+
+            entries.forEach((entry) => {
+
+                if (!entry.isIntersecting) return;
+
+                entry.target.classList.add("is-visible");
+
+                observer.unobserve(entry.target);
+
+            });
+
+        },
+        {
+            threshold: 0.12,
+            rootMargin: "0px 0px -80px 0px"
+        }
+    );
+
+
+    projects.forEach((project, index) => {
+
+        // Slight delay between projects
+        project.style.transitionDelay = `${index * 0.08}s`;
+
+        revealObserver.observe(project);
+
+    });
+
+
+    /*
+    =========================================================
+    2. METRIC COUNTERS
+    =========================================================
+    */
+
+    const counters = document.querySelectorAll("[data-count]");
+
+    const counterObserver = new IntersectionObserver(
+        (entries, observer) => {
+
+            entries.forEach((entry) => {
+
+                if (!entry.isIntersecting) return;
+
+                const element = entry.target;
+
+                const target = parseFloat(
+                    element.dataset.count
+                );
+
+                const duration = 1400;
+
+                const start = performance.now();
+
+                function updateCounter(currentTime) {
+
+                    const elapsed = currentTime - start;
+
+                    const progress = Math.min(
+                        elapsed / duration,
+                        1
+                    );
+
+                    // Smooth ease-out
+                    const eased =
+                        1 - Math.pow(1 - progress, 4);
+
+                    const current =
+                        target * eased;
+
+                    /*
+                    Keep decimal for 69.1
+                    but integers for 10,000 / 146 / 4
+                    */
+
+                    if (target % 1 !== 0) {
+
+                        element.textContent =
+                            current.toFixed(1);
+
+                    } else {
+
+                        element.textContent =
+                            Math.floor(current)
+                                .toLocaleString();
+
+                    }
+
+                    if (progress < 1) {
+
+                        requestAnimationFrame(
+                            updateCounter
+                        );
+
+                    } else {
+
+                        if (target % 1 !== 0) {
+
+                            element.textContent =
+                                target.toFixed(1);
+
+                        } else {
+
+                            element.textContent =
+                                target.toLocaleString();
+
+                        }
+
+                    }
+
+                }
+
+                requestAnimationFrame(updateCounter);
+
+                observer.unobserve(element);
+
+            });
+
+        },
+        {
+            threshold: 0.5
+        }
+    );
+
+
+    counters.forEach((counter) => {
+
+        counterObserver.observe(counter);
+
+    });
+
+
+    /*
+    =========================================================
+    3. PROJECT IMAGE FOLLOW CURSOR
+    =========================================================
+    */
+
+    const imageAreas =
+        document.querySelectorAll(".js-project-image");
+
+    imageAreas.forEach((area) => {
+
+        const cursor =
+            area.querySelector(".project__cursor");
+
+        if (!cursor) return;
+
+
+        area.addEventListener("mousemove", (event) => {
+
+            const rect =
+                area.getBoundingClientRect();
+
+            const x =
+                event.clientX - rect.left;
+
+            const y =
+                event.clientY - rect.top;
+
+            /*
+            Offset by half the cursor size
+            so the circle is centered on pointer.
+            */
+
+            cursor.style.transform =
+                `translate(${x - 37}px, ${y - 37}px) scale(1)`;
+
+        });
+
+
+        area.addEventListener("mouseenter", () => {
+
+            cursor.style.opacity = "1";
+
+        });
+
+
+        area.addEventListener("mouseleave", () => {
+
+            cursor.style.opacity = "0";
+
+            cursor.style.transform =
+                "translate(-50%, -50%) scale(.5)";
+
+        });
+
+    });
+
+
+    /*
+    =========================================================
+    4. ARCHITECTURE LINE REVEAL
+    =========================================================
+    */
+
+    const architecture =
+        document.querySelectorAll(".architecture");
+
+    const architectureObserver =
+        new IntersectionObserver(
+            (entries, observer) => {
+
+                entries.forEach((entry) => {
+
+                    if (!entry.isIntersecting) return;
+
+                    const lines =
+                        entry.target.querySelectorAll(
+                            ".architecture__line"
+                        );
+
+                    lines.forEach((line, index) => {
+
+                        line.style.transform =
+                            "scaleX(0)";
+
+                        line.style.transition =
+                            `
+                            transform
+                            ${0.45}s
+                            cubic-bezier(.16,1,.3,1)
+                            ${index * 0.12}s
+                            `;
+
+                        requestAnimationFrame(() => {
+
+                            line.style.transform =
+                                "scaleX(1)";
+
+                        });
+
+                    });
+
+                    observer.unobserve(entry.target);
+
+                });
+
+            },
+            {
+                threshold: 0.35
+            }
+        );
+
+
+    architecture.forEach((item) => {
+
+        architectureObserver.observe(item);
+
+    });
+
+
+    /*
+    =========================================================
+    5. SUBTLE IMAGE PARALLAX
+    =========================================================
+    */
+
+    const visualAreas =
+        document.querySelectorAll(
+            ".project__image-wrapper, .wildfire__visual"
+        );
+
+    visualAreas.forEach((area) => {
+
+        const image =
+            area.querySelector(".project__image");
+
+        if (!image) return;
+
+
+        area.addEventListener("mousemove", (event) => {
+
+            /*
+            Don't use parallax on small screens.
+            */
+
+            if (window.innerWidth < 900) return;
+
+            const rect =
+                area.getBoundingClientRect();
+
+            const x =
+                (event.clientX - rect.left)
+                / rect.width;
+
+            const y =
+                (event.clientY - rect.top)
+                / rect.height;
+
+            const moveX =
+                (x - 0.5) * 8;
+
+            const moveY =
+                (y - 0.5) * 8;
+
+            image.style.transform =
+                `scale(1.055) translate(${moveX}px, ${moveY}px)`;
+
+        });
+
+
+        area.addEventListener("mouseleave", () => {
+
+            image.style.transform =
+                "scale(1.02) translate(0, 0)";
+
+        });
+
+    });
+
+});
