@@ -740,6 +740,7 @@
             </article>
 
         </section>
+        
          <!-- education section-->
         <section class="education" id="education">
         <div class="education__inner">
@@ -835,9 +836,233 @@
         
             </div>
         </div>
-        </section>
-        
-         
+        </section>       
+
+        <!--contactme section-->
+        <section class="contact" id="contact">
+
+            <div class="contact__header">
+                <p class="contact__label">04 / CONTACT</p>
+            </div>
+
+            <div class="contact-terminal" id="contactTerminal">
+
+                <!-- Terminal top bar -->
+                <div class="contact-terminal__bar">
+                    <div class="contact-terminal__dots" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="contact-terminal__title">
+                        contact.exe
+                    </div>
+
+                    <div class="contact-terminal__status">
+                        <span class="status-dot"></span>
+                        ONLINE
+                    </div>
+                </div>
+
+                <!-- Terminal body -->
+                <div class="contact-terminal__body">
+
+                    <!-- Boot sequence -->
+                    <div class="contact-boot" id="contactBoot">
+
+                        <div class="terminal-line terminal-line--muted">
+                            C:\Users\visitor&gt; ./connect.exe
+                        </div>
+
+                        <div class="boot-output" id="bootOutput">
+
+                            <div class="boot-line">
+                                <span class="boot-prefix">[SYS]</span>
+                                Initializing connection...
+                            </div>
+
+                            <div class="boot-line">
+                                <span class="boot-prefix">[NET]</span>
+                                Establishing secure session...
+                            </div>
+
+                            <div class="boot-progress">
+                                <span id="bootProgressBar"></span>
+                            </div>
+
+                            <div class="boot-percent" id="bootPercent">
+                                0%
+                            </div>
+
+                            <div class="boot-line boot-success">
+                                <span>[OK]</span>
+                                Connection established.
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="contact-console" id="contactConsole">
+
+                        <div class="terminal-line terminal-line--muted">
+                            C:\Users\visitor&gt; connect --with-sebia
+                        </div>
+
+                        <div class="terminal-output">
+
+                            <p>
+                                Welcome to the contact interface.
+                            </p>
+
+                            <p class="terminal-highlight">
+                                Available commands:
+                            </p>
+
+                            <div class="contact-commands">
+
+                                <button
+                                    class="contact-command"
+                                    type="button"
+                                    data-command="email"
+                                >
+                                    <span>[1]</span>
+                                    email
+                                </button>
+
+                                <button
+                                    class="contact-command"
+                                    type="button"
+                                    data-command="linkedin"
+                                >
+                                    <span>[2]</span>
+                                    linkedin
+                                </button>
+
+                                <button
+                                    class="contact-command"
+                                    type="button"
+                                    data-command="github"
+                                >
+                                    <span>[3]</span>
+                                    github
+                                </button>
+
+                                <button
+                                    class="contact-command"
+                                    type="button"
+                                    data-command="message"
+                                >
+                                    <span>[4]</span>
+                                    send-message
+                                </button>
+
+                            </div>
+
+                        </div>
+                        <div
+                            class="contact-response"
+                            id="contactResponse"
+                            aria-live="polite"
+                        ></div>
+                        <form
+                            class="contact-form"
+                            id="contactForm"
+                            novalidate
+                        >
+
+                            <div class="form-command">
+                                C:\Users\visitor&gt; send-message
+                            </div>
+
+                            <div class="form-title">
+                                [NEW MESSAGE]
+                            </div>
+
+                            <div class="form-field">
+                                <label for="contactName">
+                                    &gt; name:
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="contactName"
+                                    name="name"
+                                    autocomplete="name"
+                                    placeholder="Your name"
+                                    required
+                                >
+                            </div>
+
+
+                            <div class="form-field">
+                                <label for="contactEmail">
+                                    &gt; email:
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="contactEmail"
+                                    name="email"
+                                    autocomplete="email"
+                                    placeholder="you@example.com"
+                                    required
+                                >
+                            </div>
+
+
+                            <div class="form-field form-field--message">
+                                <label for="contactMessage">
+                                    &gt; message:
+                                </label>
+
+                                <textarea
+                                    id="contactMessage"
+                                    name="message"
+                                    rows="5"
+                                    placeholder="Write your message..."
+                                    required
+                                ></textarea>
+                            </div>
+
+
+                            <button
+                                class="contact-submit"
+                                type="submit"
+                            >
+                                [ EXECUTE ]
+                            </button>
+
+                            <button
+                                class="contact-cancel"
+                                type="button"
+                                id="cancelMessage"
+                            >
+                                [ CANCEL ]
+                            </button>
+
+                        </form>
+                    <div class="terminal-prompt terminal-prompt--interactive">
+                        <span>C:\Users\visitor&gt;</span>
+
+                        <input
+                            type="text"
+                            id="contactCommandInput"
+                            class="terminal-command-input"
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-label="Terminal command"
+                        >
+
+                        <span class="terminal-cursor"></span>
+                    </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </section>       
 
 
     </main>

@@ -359,21 +359,9 @@
     observer.observe(section);
 
 })();
-/* =========================================================
-   FEATURED PROJECTS
-   - Scroll reveal
-   - Metric counters
-   - Project image cursor
-   - Architecture animation
-========================================================= */
+
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    /*
-    =========================================================
-    1. SCROLL REVEAL
-    =========================================================
-    */
 
     const projects = document.querySelectorAll(".project");
 
@@ -401,20 +389,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     projects.forEach((project, index) => {
-
-        // Slight delay between projects
         project.style.transitionDelay = `${index * 0.08}s`;
 
         revealObserver.observe(project);
 
     });
 
-
-    /*
-    =========================================================
-    2. METRIC COUNTERS
-    =========================================================
-    */
 
     const counters = document.querySelectorAll("[data-count]");
 
@@ -451,10 +431,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     const current =
                         target * eased;
 
-                    /*
-                    Keep decimal for 69.1
-                    but integers for 10,000 / 146 / 4
-                    */
 
                     if (target % 1 !== 0) {
 
@@ -513,12 +489,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /*
-    =========================================================
-    3. PROJECT IMAGE FOLLOW CURSOR
-    =========================================================
-    */
-
     const imageAreas =
         document.querySelectorAll(".js-project-image");
 
@@ -541,10 +511,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const y =
                 event.clientY - rect.top;
 
-            /*
-            Offset by half the cursor size
-            so the circle is centered on pointer.
-            */
 
             cursor.style.transform =
                 `translate(${x - 37}px, ${y - 37}px) scale(1)`;
@@ -569,13 +535,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
     });
-
-
-    /*
-    =========================================================
-    4. ARCHITECTURE LINE REVEAL
-    =========================================================
-    */
 
     const architecture =
         document.querySelectorAll(".architecture");
@@ -633,11 +592,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /*
-    =========================================================
-    5. SUBTLE IMAGE PARALLAX
-    =========================================================
-    */
 
     const visualAreas =
         document.querySelectorAll(
@@ -693,3 +647,394 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+(() => {
+    const terminal = document.querySelector("#contactTerminal");
+
+    if (!terminal) return;
+
+    const boot = terminal.querySelector("#contactBoot");
+    const consoleElement = terminal.querySelector("#contactConsole");
+
+    const progressBar = terminal.querySelector("#bootProgressBar");
+    const progressPercent = terminal.querySelector("#bootPercent");
+
+    const response = terminal.querySelector("#contactResponse");
+
+    const commands = terminal.querySelectorAll(".contact-command");
+
+    const form = terminal.querySelector("#contactForm");
+
+    const cancelButton =
+        terminal.querySelector("#cancelMessage");
+
+    const reduceMotion =
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+
+
+    let hasBooted = false;
+
+    const bootTerminal = () => {
+
+        if (hasBooted) return;
+
+        hasBooted = true;
+
+        if (reduceMotion) {
+
+            progressBar.style.width = "100%";
+            progressPercent.textContent = "100%";
+
+            setTimeout(showConsole, 200);
+
+            return;
+        }
+
+
+        let progress = 0;
+
+        const interval = setInterval(() => {
+
+            progress += Math.floor(
+                Math.random() * 7
+            ) + 3;
+
+            if (progress >= 100) {
+
+                progress = 100;
+
+                clearInterval(interval);
+
+                progressBar.style.width = "100%";
+                progressPercent.textContent = "100%";
+
+                setTimeout(
+                    showConsole,
+                    650
+                );
+
+                return;
+            }
+
+            progressBar.style.width =
+                `${progress}%`;
+
+            progressPercent.textContent =
+                `${progress}%`;
+
+        }, 90);
+    };
+
+
+
+    const showConsole = () => {
+
+        boot.style.display = "none";
+
+        consoleElement.classList.add(
+            "is-visible"
+        );
+    };
+
+
+    const showResponse = (html) => {
+
+        response.innerHTML = html;
+
+        response.scrollIntoView({
+            behavior: reduceMotion
+                ? "auto"
+                : "smooth",
+            block: "nearest"
+        });
+    };
+
+
+    commands.forEach((button) => {
+
+        button.addEventListener("click", () => {
+
+            const command =
+                button.dataset.command;
+
+
+            if (command === "email") {
+
+                showResponse(`
+                    <div class="terminal-line">
+                        C:\\Users\\visitor&gt; mail sebia
+                    </div>
+
+                    <p>
+                        Opening email client...
+                    </p>
+
+                    <p>
+                        <a href="mailto:sebiakods@gmail.com">
+                            sebiakods@gmail.com
+                        </a>
+                    </p>
+                `);
+
+                return;
+            }
+
+            if (command === "linkedin") {
+
+                showResponse(`
+                    <div class="terminal-line">
+                        C:\\Users\\visitor&gt; open linkedin
+                    </div>
+
+                    <p>
+                        Opening professional profile...
+                    </p>
+
+                    <p>
+                        <a
+                            href="https://www.linkedin.com/in/sebiakods/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            linkedin.com/in/sebiakods
+                        </a>
+                    </p>
+                `);
+
+                return;
+            }
+
+
+
+
+            if (command === "github") {
+
+                showResponse(`
+                    <div class="terminal-line">
+                        C:\\Users\\visitor&gt; open github
+                    </div>
+
+                    <p>
+                        Opening repositories...
+                    </p>
+
+                    <p>
+                        <a
+                            href="https://github.com/sebiakods"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            github.com/sebiakods
+                        </a>
+                    </p>
+                `);
+
+                return;
+            }
+
+
+            if (command === "message") {
+
+                showResponse(`
+                    <div class="terminal-line">
+                        C:\\Users\\visitor&gt; send-message
+                    </div>
+
+                    <p>
+                        Initializing message interface...
+                    </p>
+                `);
+
+                form.classList.add(
+                    "is-visible"
+                );
+
+                setTimeout(() => {
+
+                    const nameInput =
+                        document.querySelector(
+                            "#contactName"
+                        );
+
+                    if (nameInput) {
+                        nameInput.focus();
+                    }
+
+                }, 300);
+
+            }
+
+        });
+
+    });
+
+
+
+    cancelButton.addEventListener(
+        "click",
+        () => {
+
+            form.classList.remove(
+                "is-visible"
+            );
+
+            response.innerHTML = `
+                <div class="terminal-line">
+                    C:\\Users\\visitor&gt; cancel
+                </div>
+
+                <p>
+                    Message interface closed.
+                </p>
+            `;
+
+        }
+    );
+
+
+
+    form.addEventListener(
+        "submit",
+        (event) => {
+
+            event.preventDefault();
+
+
+            const name =
+                document.querySelector(
+                    "#contactName"
+                ).value.trim();
+
+            const email =
+                document.querySelector(
+                    "#contactEmail"
+                ).value.trim();
+
+            const message =
+                document.querySelector(
+                    "#contactMessage"
+                ).value.trim();
+
+
+            /* Basic validation */
+
+            if (!name || !email || !message) {
+
+                showResponse(`
+                    <div class="contact-success">
+                        <strong>[ERROR]</strong>
+                        Please complete all fields.
+                    </div>
+                `);
+
+                return;
+            }
+
+
+            /* Email validation */
+
+            const emailPattern =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailPattern.test(email)) {
+
+                showResponse(`
+                    <div class="contact-success">
+                        <strong>[ERROR]</strong>
+                        Invalid email address.
+                    </div>
+                `);
+
+                return;
+            }
+
+
+            const subject =
+                encodeURIComponent(
+                    `Portfolio message from ${name}`
+                );
+
+            const body =
+                encodeURIComponent(
+                    `Name: ${name}\n` +
+                    `Email: ${email}\n\n` +
+                    `Message:\n${message}`
+                );
+
+
+            /*
+             * Replace this email address
+             * with your real email.
+             */
+
+            const destination =
+                `mailto:sebiakods@gmail.com` +
+                `?subject=${subject}` +
+                `&body=${body}`;
+
+
+            /* Open mail client */
+
+            window.location.href =
+                destination;
+
+
+            /* Terminal feedback */
+
+            showResponse(`
+                <div class="contact-success">
+                    <strong>[OK]</strong>
+                    Message prepared successfully.
+                    Opening your email client...
+                </div>
+            `);
+
+        }
+    );
+
+
+    const observer =
+        new IntersectionObserver(
+            (entries) => {
+
+                entries.forEach((entry) => {
+
+                    if (
+                        entry.isIntersecting
+                    ) {
+
+                        bootTerminal();
+
+                        observer.unobserve(
+                            entry.target
+                        );
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.25
+            }
+        );
+
+
+    observer.observe(terminal);
+
+})();
+
